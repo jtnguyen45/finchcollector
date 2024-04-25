@@ -33,3 +33,20 @@ class Feeding(models.Model):
 
     def __str__(self):
         return f"{self.get_meal_display()} on {self.date}"
+    
+class Sighting(models.Model):
+    ACTIONS = (
+        ('F', 'Flying'),
+        ('S', 'Sleeping'),
+        ('D', 'Drinking water'),
+        ('E', 'Eating'),
+        ('M', 'Mating')
+    )
+
+    date = models.DateField('sighting date')
+    where = models.CharField(max_length=100)
+    action = models.CharField(max_length=1, choices=ACTIONS)
+    finch = models.ForeignKey(Finch, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.get_action_display()} at {self.where} on {self.date}"
