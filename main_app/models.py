@@ -1,5 +1,16 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator
+
+class Diet(models.Model):
+    name = models.CharField(max_length=50)
+    amount = models.IntegerField(validators=[MinValueValidator(1)])
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('diets_detail', kwargs={'pk': self.id})
 
 class Finch(models.Model):
     SEX_OPTIONS = (
@@ -13,6 +24,7 @@ class Finch(models.Model):
     color = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     image = models.CharField(max_length=100)
+    diets = models.ManyToManyField(Diet)
 
     def __str__(self):
         return self.name
